@@ -1,13 +1,7 @@
-FROM python:3.11-slim
+FROM runpod/base:0.6.2-cuda12.2.0
 
-WORKDIR /app
+RUN pip install --no-cache-dir runpod sentence-transformers torch
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY handler.py /handler.py
 
-COPY handler.py .
-
-# 미리 모델 다운로드 (콜드스타트 방지)
-RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('nlpai-lab/KURE-v1')"
-
-CMD ["python", "handler.py"]
+CMD ["python", "/handler.py"]
