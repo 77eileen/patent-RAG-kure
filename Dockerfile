@@ -1,7 +1,9 @@
-FROM runpod/base:0.6.2-cuda12.2.0
+FROM python:3.11-slim
 
-RUN pip install --no-cache-dir runpod sentence-transformers torch
+WORKDIR /app
 
-COPY handler.py /handler.py
+RUN pip install --no-cache-dir runpod sentence-transformers torch --index-url https://download.pytorch.org/whl/cpu
 
-CMD ["python", "/handler.py"]
+COPY handler.py /app/handler.py
+
+CMD ["python", "-u", "/app/handler.py"]
